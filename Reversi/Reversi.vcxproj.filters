@@ -18,9 +18,6 @@
     <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.cpp">

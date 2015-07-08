@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.h" />
-    <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.cpp" />
