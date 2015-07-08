@@ -1,0 +1,17 @@
+﻿Build started 08/07/2015 3:47:05 PM.
+     1>Project "c:\Users\Thomas\documents\visual studio 2010\Projects\Reversi\Reversi\Reversi.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Reversi.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         Reversi.vcxproj -> c:\users\thomas\documents\visual studio 2010\Projects\Reversi\Debug\Reversi.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\Reversi.unsuccessfulbuild".
+         Touching "Debug\Reversi.lastbuildstate".
+     1>Done Building Project "c:\Users\Thomas\documents\visual studio 2010\Projects\Reversi\Reversi\Reversi.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.03
