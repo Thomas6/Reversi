@@ -24,6 +24,9 @@
     <ClInclude Include="ReversiModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Turn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.cpp">
@@ -32,10 +35,13 @@
     <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Main.cpp">
+    <ClCompile Include="ReversiModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ReversiModel.cpp">
+    <ClCompile Include="Turn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

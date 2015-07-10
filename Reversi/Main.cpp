@@ -1,15 +1,15 @@
 #include <iostream>
-#include "Board.h"
+#include "ReversiModel.h"
 
-using namespace std;
+//using namespace std;
 
 int main(int argc, char **argv)
 {
-    cout << "Hello World!" << endl;
-	cin.get();
+    std::cout << "Hello World!" << std::endl;
+	std::cin.get();
 
 	//initialize the board
-	Board board = Board();
-
+	//Board board = Board();
+	ReversiModel reversiModel = ReversiModel(Board());
 	return 0;
 }
