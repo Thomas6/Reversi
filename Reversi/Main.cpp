@@ -11,5 +11,6 @@ int main(int argc, char **argv)
 	//initialize the board
 	//Board board = Board();
 	ReversiModel reversiModel = ReversiModel(Board());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 4), reversiModel.getTurnAddr());
 	return 0;
 }

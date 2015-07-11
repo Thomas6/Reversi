@@ -18,6 +18,12 @@ class ReversiModel
 
     public:
 
+		//
+		Board* getBoardAddr();
+
+		//
+		Turn* getTurnAddr();
+
 		// initialize the board and the starting player
 		ReversiModel(Board board);
 
@@ -43,14 +49,16 @@ class ReversiModel
 		bool checkDirection(BoardSquare currentEmptyBoardSquare, Board board, State playerColour, int rowOffset, int columnOffset);
 
 		// this gets called upon Controller notifying the model?
-		void resolveMove(Board &board, BoardSquare boardSquare, Turn* p_Turn);
+		void resolveMove(Board* board, BoardSquare boardSquare, Turn* p_Turn);
 
 		// view interacts with this one?
 		void updateBoard();
 
 		void updateView();
 
-		void flipBoardSquares(BoardSquare currentBoardSquare, BoardSquare chosenBoardSquare, State playerColour, Board &board, int rowOffset, int columnOffset);
+		void flipBoardSquares(int chosenBoardSquareRow, int chosenBoardSquareColumn, State playerColour, Board* board, int rowOffset, int columnOffset);
+
+		void outputBoardToConsole(Board* p_board);
 };
 
 #endif // REVERSIMODEL_H

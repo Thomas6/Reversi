@@ -15,26 +15,20 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ReversiModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Turn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardSquare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ReversiModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,6 +36,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardSquare.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

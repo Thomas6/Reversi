@@ -1,4 +1,5 @@
 #include "ReversiModel.h"
+#include <iostream>
 
 ReversiModel::ReversiModel(Board board)
 {
@@ -25,6 +26,18 @@ ReversiModel::ReversiModel(Board board)
 
 	Turn* p_turn = new Turn(getValidMoves(board_, BLACK, adjacentEmptyBoardSquares_), BLACK);
 	p_turn_ = p_turn;
+
+	outputBoardToConsole(getBoardAddr());
+}
+
+Board* ReversiModel::getBoardAddr()
+{
+	return &board_;
+}
+
+Turn* ReversiModel::getTurnAddr()
+{
+	return p_turn_;
 }
 
 void ReversiModel::setValidMove(int row, int column, Direction* dirs, ValidMove* validMove)
@@ -35,13 +48,32 @@ void ReversiModel::setValidMove(int row, int column, Direction* dirs, ValidMove*
 }
 
 // use a blob finder algorithm? Should be faster. use a growing vector of possible moves/empty spaces rather than searching the board over and over.
-
-
-std::vector<BoardSquare> getAdjacentEmptySquares(Board board, int currentSquareRow, int currentSquareColumn)
+//********************** TODO *************************
+// make direction a struct and remove some repition?
+// write "==" operator for boardSquares
+void getAdjacentEmptySquares(Board board, BoardSquare boardSquare, std::vector<BoardSquare> &adjacentEmptyBoardSquares)
 {
-	std::vector<BoardSquare> thing;
-	return thing;
 	// check all 8 adjacent squares to the current squares and return the empty ones
+	
+	BoardSquare possibleEmptyBoardSquare; //  = *board.getBoardSquare(boardSquare.getRow(), boardSquare.getColumn());
+	int boardSquareRow = boardSquare.getRow();
+	int boardSquareCol = boardSquare.getColumn();
+	bool addToAdjacentEmptyBoardSquaresFlag;
+
+	// check left
+	possibleEmptyBoardSquare = *board.getBoardSquare(boardSquareRow, boardSquareCol - 1);
+	// if already in adjacentEmptySquares, don't add it
+	addToAdjacentEmptyBoardSquaresFlag = true;
+	for (int i = 0; i < adjacentEmptyBoardSquares.size(); i++)
+	{
+		//
+		if (adjacentEmptyBoardSquares[i] == possibleEmptyBoardSquare)
+		{
+			addToAdjacentEmptyBoardSquaresFlag = false;
+			break;
+		}
+	}
+	//while(adjacentEmptyBoardSquares.
 }
 
 
@@ -59,33 +91,33 @@ State ReversiModel::getOtherPlayerColour(State playerColour)
 
 bool ReversiModel::checkDirection(BoardSquare currentEmptyBoardSquare, Board board, State playerColour, int rowOffset, int columnOffset)
 {
-	BoardSquare examinedBoardSquare;
+	BoardSquare* examinedBoardSquare;
 
 	examinedBoardSquare = board.getBoardSquare(currentEmptyBoardSquare.getRow() + rowOffset, currentEmptyBoardSquare.getColumn() + columnOffset);
 	// if the board square being examined is of the other player's colour, then there is the potential for a move in this direction
-	if (examinedBoardSquare.getState() == getOtherPlayerColour(playerColour))
+	if (examinedBoardSquare->getState() == getOtherPlayerColour(playerColour))
 	{
 		// now we check the board square beyond this one to see if it is a valid move 
-		examinedBoardSquare = board.getBoardSquare(examinedBoardSquare.getRow() + rowOffset, examinedBoardSquare.getColumn() + columnOffset);
+		examinedBoardSquare = board.getBoardSquare(examinedBoardSquare->getRow() + rowOffset, examinedBoardSquare->getColumn() + columnOffset);
 		// if it is of the current player's colour, then this is definitely a valid move
-		if (examinedBoardSquare.getState() == playerColour)
+		if (examinedBoardSquare->getState() == playerColour)
 		{
 			return true;
 		}
 		// if it is yet another board square of the other player's colour...
-		else if (examinedBoardSquare.getState() == getOtherPlayerColour(playerColour))
+		else if (examinedBoardSquare->getState() == getOtherPlayerColour(playerColour))
 		{
 			// ...we must keep on going until we find a board square that is either of our colour or something else
-			while(examinedBoardSquare.getState() == getOtherPlayerColour(playerColour))
+			while(examinedBoardSquare->getState() == getOtherPlayerColour(playerColour))
 			{
-				examinedBoardSquare = board.getBoardSquare(examinedBoardSquare.getRow() + rowOffset, examinedBoardSquare.getColumn() + columnOffset);
+				examinedBoardSquare = board.getBoardSquare(examinedBoardSquare->getRow() + rowOffset, examinedBoardSquare->getColumn() + columnOffset);
 				// if we found a board square that is of the current player's colour, then this is definitely a valid move
-				if (examinedBoardSquare.getState() == playerColour)
+				if (examinedBoardSquare->getState() == playerColour)
 				{
 					return true;
 		        }
 				// if we found a board square that is either empty or off board, then we go on to the next direction
-				else if (examinedBoardSquare.getState() == EMPTY || OFFBOARD)
+				else if (examinedBoardSquare->getState() == EMPTY || OFFBOARD)
 				{
 					return false;
 				}
@@ -203,29 +235,29 @@ ValidMove* ReversiModel::getValidMoves(Board board, State playerColour, std::vec
 
 	tempValidMoveStackSize = tempValidMoveStack.size();
 
-	p_ValidMoves = new ValidMove[tempValidMoveStackSize];	
-	while (!tempValidMoveStack.empty())
+	p_ValidMoves = new ValidMove[tempValidMoveStackSize];
+
+	for (int i = 0; !tempValidMoveStack.empty(); i++)
 	{
-		p_ValidMoves = tempValidMoveStack.top();
-		p_ValidMoves++;
+		p_ValidMoves[i] = *tempValidMoveStack.top();
 		tempValidMoveStack.pop();
 	}
-	// return p_ValidMoves back to beginning
-	for (int i = tempValidMoveStackSize; i > 0; i--)
-	{
-		p_ValidMoves--;
-	}
+	/* debugging!
+	ValidMove move1 = p_ValidMoves[0];
+	ValidMove move2 = p_ValidMoves[1];
+	ValidMove move3 = p_ValidMoves[2];
+	ValidMove move4 = p_ValidMoves[3];
+	*/
 	return p_ValidMoves;
 }
 
 // don't forget to change getBoardSquare to verify if it returns an offBoard boardsquare.
-void ReversiModel::resolveMove(Board &board, BoardSquare chosenBoardSquare, Turn* p_turn)
+void ReversiModel::resolveMove(Board* board, BoardSquare chosenBoardSquare, Turn* p_turn)
 {
 	//******************************* for debugging purposes; create function checkMove
 	ValidMove* p_validMoves = p_turn->getValidMoves();
 	ValidMove chosenValidMove;
 	Direction* p_dirs;
-	BoardSquare currentBoardSquare = chosenBoardSquare;
 	int chosenBoardSquareRow = chosenBoardSquare.getRow();
 	int chosenBoardSquareColumn = chosenBoardSquare.getColumn();
 	State playerColour;
@@ -247,31 +279,41 @@ void ReversiModel::resolveMove(Board &board, BoardSquare chosenBoardSquare, Turn
 		switch (p_dirs[i])
 		{
 		    case LEFT:	
-                flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, 0, -1);
+                flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, 0, -1);
 				break;
 			case UP_LEFT:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, -1, -1);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, -1, -1);
 				break;
 			case UP:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, -1, 0);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, -1, 0);
 				break;
 			case UP_RIGHT:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, -1, 1);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, -1, 1);
 				break;
 			case RIGHT:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, 0, 1);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, 0, 1);
 				break;
 			case DOWN_RIGHT:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, 1, 1);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, 1, 1);
 				break;
 			case DOWN:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, 1, 0);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, 1, 0);
 				break;
 			case DOWN_LEFT:
-				flipBoardSquares(currentBoardSquare, chosenBoardSquare, p_turn->getPlayerColour(), board, 1, -1);
+				flipBoardSquares(chosenBoardSquareRow, chosenBoardSquareColumn, p_turn->getPlayerColour(), board, 1, -1);
 				break;
 		}
 	}
+
+	//outputBoardToConsole();
+
+	BoardSquare square1 = *board->getBoardSquare(3, 4);
+	BoardSquare square2 = *board->getBoardSquare(4, 4);
+	BoardSquare square3 = *board->getBoardSquare(5, 4);
+	BoardSquare square4 = *board->getBoardSquare(4, 5);
+	BoardSquare square5 = *board->getBoardSquare(5, 5);
+
+	outputBoardToConsole(board);
 
 	// now, update the View and delete the turn because it is finished.
 	updateView();
@@ -281,19 +323,35 @@ void ReversiModel::resolveMove(Board &board, BoardSquare chosenBoardSquare, Turn
 	delete p_turn;
 
 	// might delegate some of this functionality to another function and make some of these functions private too
-	p_turn = new Turn(getValidMoves(board, getOtherPlayerColour(playerColour), adjacentEmptyBoardSquares_), getOtherPlayerColour(playerColour));
+	//p_turn = new Turn(getValidMoves(*board, getOtherPlayerColour(playerColour), adjacentEmptyBoardSquares_), getOtherPlayerColour(playerColour));
 }
-
-void ReversiModel::flipBoardSquares(BoardSquare currentBoardSquare, BoardSquare chosenBoardSquare, State playerColour, Board &board, int rowOffset, int columnOffset)
+// change column to col
+void ReversiModel::flipBoardSquares(int chosenBoardSquareRow, int chosenBoardSquareColumn, State playerColour, Board* board, int rowOffset, int columnOffset)
 {
-	while (currentBoardSquare.getState() != playerColour)
+	BoardSquare* boardSquareBeingChanged = board->getBoardSquare(chosenBoardSquareRow, chosenBoardSquareColumn);
+	while (boardSquareBeingChanged->getState() != playerColour)
 	{
 		// here we finally alter the board.
-		board.setBoardSquareState(currentBoardSquare, playerColour); 
-		currentBoardSquare = board.getBoardSquare(currentBoardSquare.getRow() + rowOffset, currentBoardSquare.getColumn() + columnOffset);
+		board->setBoardSquareState(boardSquareBeingChanged, playerColour); 
+		boardSquareBeingChanged = board->getBoardSquare(chosenBoardSquareRow + rowOffset, chosenBoardSquareColumn + columnOffset);
 	}
-	// set it back for the next loop
-	currentBoardSquare = chosenBoardSquare;
 }
 
 void ReversiModel::updateView(){}
+
+void ReversiModel::outputBoardToConsole(Board* p_board)
+{
+	for (int i = 1; i <= 8; i++)
+	{
+		for (int j = 1; j <= 8; j++)
+		{
+			std::cout << p_board->getBoardSquare(i, j)->getState();
+			// if end of row, go to next row
+			if (j == 8)
+			{
+				std::cout << std::endl;
+			}
+		}
+	}
+	std::cout << std::endl;
+}

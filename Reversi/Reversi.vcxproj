@@ -11,14 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.h" />
-    <ClInclude Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardSquare.h" />
     <ClInclude Include="ReversiModel.h" />
     <ClInclude Include="Turn.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\Board.cpp" />
-    <ClCompile Include="..\..\YouiSoftwarePuzzle\YouiSoftwarePuzzle\BoardSquare.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardSquare.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ReversiModel.cpp" />
     <ClCompile Include="Turn.cpp" />
