@@ -16,5 +16,11 @@ int main(int argc, char **argv)
 		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
 	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 6),
 		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(2, 5),
+		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(5, 6),
+		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 7),
+		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
 	return 0;
 }

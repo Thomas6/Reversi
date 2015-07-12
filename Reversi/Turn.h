@@ -12,21 +12,20 @@ struct Direction
 	int col_offset;
 };
 
-// will change this later, but its fine for now
 struct ValidMove
 {
 	int row;
 	int col;
-	Direction_Name* p_dirs;
-	int p_dirs_size;
+	int dir_name_array_size;
+	Direction_Name* p_dir_name_array;
 };
 
 class Turn
 {
 	ValidMove* p_vm_array_;
-	//int p_vm_array_size_;
 	State pc_;
     public:
+
 		//
 		Turn();
 

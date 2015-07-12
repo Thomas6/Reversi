@@ -31,7 +31,7 @@ Board::Board()
 BoardSquare* Board::getBoardSquare(int row, int col)
 {
 	// check to see if row and column are valid
-	if (row > 8 || row < 1 && col > 8 && col < 1)
+	if (row > 8 || row < 1 || col > 8 || col < 1)
 	{
 		// if not, return board_square_offboard_
 		return &offboard_bs_;

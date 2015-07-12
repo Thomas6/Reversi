@@ -87,8 +87,8 @@ void ReversiModel::setValidMove(int row, int col, Direction_Name* dirs, int numD
 {
 	p_vm->row = row;
 	p_vm->col = col;
-	p_vm->p_dirs = dirs;
-	p_vm->p_dirs_size = numDirs;
+	p_vm->dir_name_array_size = numDirs;
+	p_vm->p_dir_name_array = dirs;
 }
 
 // use a blob finder algorithm? Should be faster. use a growing vector of possible moves/empty spaces rather than searching the board over and over.
@@ -280,7 +280,7 @@ ValidMove* ReversiModel::getValidMoves(Board b, State pc, std::vector<BoardSquar
 	{
 	    current_empty_bs = adjacent_empty_bs_vector.back();
 		vm = getValidMove(current_empty_bs, b, pc);
-		if (vm.p_dirs_size != 0)
+		if (vm.dir_name_array_size != 0)
 		{
 			temp_vm_stack.push(vm);
 		}
@@ -332,17 +332,6 @@ void ReversiModel::resolveMove(Board* p_b, BoardSquare chosen_bs, Turn* p_turn, 
 	int chosen_bs_row = chosen_bs.getRow();
 	int chosen_bs_col = chosen_bs.getCol();
 	State pc = p_turn->getPlayerColour();
-	/*
-	while (p_vm != NULL)
-	{
-		if (chosen_bs_row == p_vm->row && chosen_bs_col == p_vm->col)
-		{
-			chosen_vm = *p_vm;
-			break;
-		}
-		p_vm++;
-	}
-	*/
 	
 	for (int i = 0; i < p_vm_array_size; i++)
 	{
@@ -352,30 +341,14 @@ void ReversiModel::resolveMove(Board* p_b, BoardSquare chosen_bs, Turn* p_turn, 
 			break;
 		}
 	}
-	
-	ValidMove vm1 = p_vm[0];
-	ValidMove vm2 = p_vm[1];
-	ValidMove vm3 = p_vm[2];
 
-	/*
-	while (p_vm != NULL)
+	for (int i = 0; i < chosen_vm.dir_name_array_size; i++)
 	{
-		if (chosen_bs_row == p_vm->row && chosen_bs_col == p_vm->col)
-		{
-			chosen_vm = *p_vm;
-			break;
-		}
-		p_vm++;
-	}
-	*/
-	//*************************
 
-	p_dirs = chosen_vm.p_dirs;
-	// make this not fuck up
-	for (int i = 0; p_dirs[i] != NULL; i++)
-	{
-		int integer = p_dirs[i];
-		switch (p_dirs[i])
+			//bs_row + CARDINAL_AND_ORDINAL_DIRECTIONS[i].row_offset,
+			//bs_col + CARDINAL_AND_ORDINAL_DIRECTIONS[i].col_offset
+
+		switch (chosen_vm.p_dir_name_array[i])
 		{
 		    case LEFT:	
                 flipBoardSquares(chosen_bs_row, chosen_bs_col, pc, p_b, 0, -1);

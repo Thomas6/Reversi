@@ -64,17 +64,22 @@ class ReversiModel
 		//
 		void updateNonEmptyBoardSquareVector(Board* p_b, std::vector<BoardSquare>* p_non_empty_bs_vector, BoardSquare chosen_bs, State pc);
 
+		//
 		void getAdjacentEmptySquares(Board b, BoardSquare bs, std::vector<BoardSquare>* p_adjacent_empty_bs_vector);
 
 		// this gets called upon Controller notifying the model?
 		void resolveMove(Board* p_b, BoardSquare bs, Turn* p_turn, std::vector<BoardSquare>* p_non_empty_bs_vector, std::vector<BoardSquare>* p_adjacent_empty_bs_vector);
+
 		// view interacts with this one?
 		void updateBoard();
 
+		//
 		void updateView();
 
+		//
 		void flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State pc, Board* p_b, int row_offset, int col_offset);
 
+		//
 		void outputBoardToConsole(Board* p_b);
 };
 
