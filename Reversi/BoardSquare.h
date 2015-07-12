@@ -6,17 +6,19 @@ enum State { EMPTY, WHITE, BLACK, OFFBOARD };
 class BoardSquare
 {
 	int row_;
-	int column_;
+	int col_;
 	State state_;
 
     public:
 		BoardSquare();
-		BoardSquare(int row, int column, State state);
+		BoardSquare(int row, int col, State state);
 
 		int getRow();
-		int getColumn();
+		int getCol();
 		State getState();
 		void setState(State state);
+
+		//bool operator == (const BoardSquare &L, const BoardSquare &R) const;
 };
 
 #endif // BOARDSQUARE_H // end

@@ -9,8 +9,12 @@ int main(int argc, char **argv)
 	std::cin.get();
 
 	//initialize the board
-	//Board board = Board();
 	ReversiModel reversiModel = ReversiModel(Board());
-	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 4), reversiModel.getTurnAddr());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 4),
+		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 5),
+		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
+	reversiModel.resolveMove(reversiModel.getBoardAddr(), *reversiModel.getBoardAddr()->getBoardSquare(3, 6),
+		reversiModel.getTurnAddr(), reversiModel.getAdjacentEmptyBoardSquareVectorAddr(), reversiModel.getNonEmptyBoardSquareVectorAddr());
 	return 0;
 }

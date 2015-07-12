@@ -2,22 +2,27 @@
 
 Turn::Turn()
 {
-	playerColour_ = BLACK;
+	pc_ = BLACK;
 	//p_ValidMoves_ = NULL;
 }
 
-Turn::Turn(ValidMove* p_ValidMoves, State playerColour)
+Turn::Turn(ValidMove* p_vm_array, State pc)
 {
-	p_ValidMoves_ = p_ValidMoves;
-	playerColour_ = playerColour;
+	p_vm_array_ = p_vm_array;
+	pc_ = pc;
 }
+
+/*int getValidMoveArraySize()
+{
+	//return p_vm_array_size_;
+}*/
 
 ValidMove* Turn::getValidMoves()
 {
-	return p_ValidMoves_;
+	return p_vm_array_;
 }
 
 State Turn::getPlayerColour()
 {
-	return playerColour_;
+	return pc_;
 }
