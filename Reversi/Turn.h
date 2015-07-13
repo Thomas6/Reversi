@@ -1,7 +1,8 @@
 #ifndef TURN_H 
 #define TURN_H
 
-#include "BoardSquare.h"
+#include "ReversiModel.h"
+#include <vector>
 
 enum Direction_Name { LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT };
 
@@ -22,24 +23,58 @@ struct ValidMove
 
 class Turn
 {
-	ValidMove* p_vm_array_;
-	State pc_;
+    private:
+
+		//---------------Attributes--------------------------------
+
+		//
+		int p_vm_array_size_;
+
+		//
+		ValidMove* p_vm_array_;
+
+		//
+		State pc_;
+
+		//
+		Direction CARDINAL_AND_ORDINAL_DIRECTIONS_ARRAY[8];
+
+		//--------------Functions-----------------------------------
+
+		//
+		ValidMove constructValidMove(BoardSquare current_empty_bs, Board b, State pc);
+
+		//
+		void constructDirection(Direction &dir, int row_offset, int col_offset, Direction_Name dir_name);
+
+		//
+		void constructCardinalAndOrdinalDirectionArray();
+
+		//
+		bool checkDirection(BoardSquare current_empty_bs, Board b, State pc, int row_offset, int col_offset);
+
     public:
 
 		//
 		Turn();
 
 		//
-		Turn(ValidMove* p_vm, State pc);
+		int getValidMoveArraySize();
 
 		//
-		//int getValidMoveArraySize();
+		Turn(State pc, std::vector<BoardSquare> adjacent_empty_bs_vector, Board b);
 
 		//
-		ValidMove* getValidMoves();
+		ValidMove* getValidMoveArray();
 
 		//
 		State getPlayerColour();
+
+		//
+		State getOtherPlayerColour(State pc);
+
+		//
+		Direction* getCardinalAndOrdinalDirectionsArray();
 };
 
 #endif // TURN_H // end
