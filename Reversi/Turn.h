@@ -59,10 +59,10 @@ class Turn
 		Turn();
 
 		//
-		int getValidMoveArraySize();
+		Turn(State pc, std::vector<BoardSquare> adjacent_empty_bs_vector, Board b);
 
 		//
-		Turn(State pc, std::vector<BoardSquare> adjacent_empty_bs_vector, Board b);
+		int getValidMoveArraySize();
 
 		//
 		ValidMove* getValidMoveArray();

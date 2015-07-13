@@ -25,8 +25,6 @@ ReversiModel::ReversiModel()
 	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 3, EMPTY));
 
 	p_t_ = new Turn(BLACK, adjacent_empty_bs_vector_, b_);
-
-	invalid_move_count_ = 0;
 	game_over_flag_ = false;
 
 	// debugging!
@@ -38,9 +36,19 @@ State ReversiModel::getBoardSquareState(int row, int col)
 	return b_.getBoardSquare(row, col)->getState();
 }
 
-void ReversiModel::setBoardSquareState(int row, int col, State state)
+bool ReversiModel::chooseBoardSquare(int row, int col)
 {
-	b_.setBoardSquareState(b_.getBoardSquare(row, col), state);
+	bool valid_move_flag;
+	valid_move_flag = checkMove(*p_t_, row, col);
+	if (valid_move_flag == true)
+	{
+		resolveMove(*b_.getBoardSquare(row, col));
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool ReversiModel::isGameOver()
@@ -138,10 +146,11 @@ bool getChosenValidMove(Turn t, int row, int col, ValidMove* p_chosen_vm)
 			return true;
 		}
 	}
+	// there are no valid moves
 	return false;
 }
 
-bool checkMove(Turn t, int row, int col)
+bool ReversiModel::checkMove(Turn t, int row, int col)
 {
 	for (int i = 0; i < t.getValidMoveArraySize(); i++)
 	{
@@ -162,25 +171,12 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 	int chosen_bs_col = chosen_bs.getCol();
 	State pc = p_t_->getPlayerColour();
 	bool is_chosen_mv_flag = getChosenValidMove(*p_t_, chosen_bs_row, chosen_bs_col, &chosen_vm);
-	/* remove this and implement it in a smarter way. maybe move it to bottom of function?
+
 	if (is_chosen_mv_flag == false)
 	{
-		invalid_move_count_++;
+		// something has gone horribly wrong or checkMove fouled up if it returns here
 		return;
 	}
-	// if the user picks an invalid move, nothing happens.
-	else
-	{
-		invalid_move_count_ = 0;
-	}
-
-	if (invalid_move_count_ >= 2)
-	{
-		// notfiy the view and stop the game?
-		game_over_flag_ = true;
-		return;
-	}
-	*/
 
 	for (int i = 0; i < chosen_vm.dir_name_array_size; i++)
 	{
@@ -224,6 +220,19 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 
 	// might delegate some of this functionality to another function and make some of these functions private too
 	p_t_ = new Turn( p_t_->getOtherPlayerColour(pc), adjacent_empty_bs_vector_, b_);
+
+	// current player can't make a move.
+	if(p_t_->getValidMoveArraySize() == 0)
+	{
+		delete p_t_;
+		p_t_ = new Turn( pc, adjacent_empty_bs_vector_, b_);
+		// can the next player make a move?
+		if (p_t_->getValidMoveArraySize() == 0)
+		{
+			// if they can't, it's game over
+			game_over_flag_ = true;
+		}
+	}
 }
 
 void ReversiModel::flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State pc, Board* p_b, int row_offset, int col_offset)

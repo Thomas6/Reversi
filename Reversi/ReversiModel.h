@@ -15,8 +15,10 @@ class ReversiModel
 	std::vector<BoardSquare> non_empty_bs_vector_;
 	std::vector<BoardSquare> adjacent_empty_bs_vector_;
 	Turn* p_t_;
-	int invalid_move_count_;
 	bool game_over_flag_;
+
+	//
+	bool checkMove(Turn t, int row, int col);
 
 	//
 	void updateNonEmptyBoardSquareVector(BoardSquare chosen_bs, State pc);
@@ -39,7 +41,7 @@ class ReversiModel
 		State getBoardSquareState(int row, int col);
 
 		// implement this and fater you're done doing that, make a pretty UI for the game. Demonstrate the flexibility to implement whatever UI they damn well feel like.
-		void setBoardSquareState(int row, int col, State state);
+		bool chooseBoardSquare(int row, int col);
 
 		//
 		bool isGameOver();
