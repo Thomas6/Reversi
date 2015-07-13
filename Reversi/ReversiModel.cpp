@@ -1,9 +1,9 @@
 #include "ReversiModel.h"
 #include <iostream>
 
-ReversiModel::ReversiModel(Board board)
+ReversiModel::ReversiModel()
 {
-	b_ = board;
+	b_ = Board();
 	// the initial board configuration
 	non_empty_bs_vector_.push_back(BoardSquare(4, 4, BLACK));
 	non_empty_bs_vector_.push_back(BoardSquare(4, 5, WHITE));
@@ -33,24 +33,14 @@ ReversiModel::ReversiModel(Board board)
 	outputBoardToConsole();
 }
 
-Board* ReversiModel::getBoardAddr()
+State ReversiModel::getBoardSquareState(int row, int col)
 {
-	return &b_;
+	return b_.getBoardSquare(row, col)->getState();
 }
 
-std::vector<BoardSquare>* ReversiModel::getNonEmptyBoardSquareVectorAddr()
+void ReversiModel::setBoardSquareState(int row, int col, State state)
 {
-	return &non_empty_bs_vector_;
-}
-
-std::vector<BoardSquare>* ReversiModel::getAdjacentEmptyBoardSquareVectorAddr()
-{
-	return &adjacent_empty_bs_vector_;
-}
-
-Turn* ReversiModel::getTurnAddr()
-{
-	return p_t_;
+	b_.setBoardSquareState(b_.getBoardSquare(row, col), state);
 }
 
 bool ReversiModel::isGameOver()
@@ -172,7 +162,7 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 	int chosen_bs_col = chosen_bs.getCol();
 	State pc = p_t_->getPlayerColour();
 	bool is_chosen_mv_flag = getChosenValidMove(*p_t_, chosen_bs_row, chosen_bs_col, &chosen_vm);
-
+	/* remove this and implement it in a smarter way. maybe move it to bottom of function?
 	if (is_chosen_mv_flag == false)
 	{
 		invalid_move_count_++;
@@ -190,6 +180,7 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 		game_over_flag_ = true;
 		return;
 	}
+	*/
 
 	for (int i = 0; i < chosen_vm.dir_name_array_size; i++)
 	{
@@ -224,7 +215,7 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 	outputBoardToConsole();
 
 	// now, update the View and delete the turn because it is finished.
-	updateView();
+	//updateView();
 
 	pc = p_t_->getPlayerColour();
 
@@ -250,8 +241,6 @@ void ReversiModel::flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State 
 		p_being_changed_bs = p_b->getBoardSquare(p_being_changed_bs->getRow() + row_offset, p_being_changed_bs->getCol() + col_offset);
 	}
 }
-
-void ReversiModel::updateView(){}
 
 void ReversiModel::outputBoardToConsole()
 {

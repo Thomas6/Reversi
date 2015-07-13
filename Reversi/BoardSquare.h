@@ -17,8 +17,6 @@ class BoardSquare
 		int getCol();
 		State getState();
 		void setState(State state);
-
-		//bool operator == (const BoardSquare &L, const BoardSquare &R) const;
 };
 
 #endif // BOARDSQUARE_H // end

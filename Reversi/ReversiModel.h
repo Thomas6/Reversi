@@ -8,7 +8,6 @@
 
 struct ValidMove;
 class Turn;
-//
 
 class ReversiModel
 {
@@ -18,47 +17,35 @@ class ReversiModel
 	Turn* p_t_;
 	int invalid_move_count_;
 	bool game_over_flag_;
-	
+
+	//
+	void updateNonEmptyBoardSquareVector(BoardSquare chosen_bs, State pc);
+
+	// 
+	void updateAdjacentEmptySquares(BoardSquare bs);
+
+	// implement game over check when a move is resolved (are there any empty board squares left?)
+	void resolveMove(BoardSquare chosen_bs);
+
+	//
+	void flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State pc, Board* p_b, int row_offset, int col_offset);
+
     public:
 
-		// initialize the board and the starting player
-		ReversiModel(Board b);
-
 		//
-		Board* getBoardAddr();
+		ReversiModel();
 
-		//
-		std::vector<BoardSquare>* getNonEmptyBoardSquareVectorAddr();
+		// implement this
+		State getBoardSquareState(int row, int col);
 
-		//
-		std::vector<BoardSquare>* getAdjacentEmptyBoardSquareVectorAddr();
-
-		//
-		Turn* getTurnAddr();
+		// implement this and fater you're done doing that, make a pretty UI for the game. Demonstrate the flexibility to implement whatever UI they damn well feel like.
+		void setBoardSquareState(int row, int col, State state);
 
 		//
 		bool isGameOver();
 
 		//
 		int* getScore();
-
-		//
-		void updateNonEmptyBoardSquareVector(BoardSquare chosen_bs, State pc);
-
-		// change the name of this guy
-		void updateAdjacentEmptySquares(BoardSquare bs);
-
-		// this gets called upon Controller notifying the model?
-		void resolveMove(BoardSquare chosen_bs);
-
-		// view interacts with this one?
-		void updateBoard();
-
-		//
-		void updateView();
-
-		//
-		void flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State pc, Board* p_b, int row_offset, int col_offset);
 
 		// debugging!
 		void outputBoardToConsole();

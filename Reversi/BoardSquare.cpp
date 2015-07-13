@@ -33,12 +33,3 @@ void BoardSquare::setState(State state)
 {
 	state_ = state;
 }
-
-/*
-bool operator == (const BoardSquare &L, const BoardSquare &R)
-{
-	BoardSquare R_bs = R;
-	BoardSquare L_bs = L;
-    return(R_bs.getRow() == L_bs.getRow() && R_bs.getCol() == L_bs.getCol());
-}
-*/
