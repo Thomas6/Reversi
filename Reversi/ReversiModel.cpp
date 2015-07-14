@@ -1,89 +1,19 @@
+#include "CppInterfaces.h"
+
 #include "ReversiModel.h"
 #include <iostream>
 
-ReversiModel::ReversiModel()
+// 
+bool ReversiModel::checkMove(Turn t, int row, int col)
 {
-	b_ = Board();
-	// the initial board configuration
-	non_empty_bs_vector_.push_back(BoardSquare(4, 4, BLACK));
-	non_empty_bs_vector_.push_back(BoardSquare(4, 5, WHITE));
-	non_empty_bs_vector_.push_back(BoardSquare(5, 4, WHITE));
-	non_empty_bs_vector_.push_back(BoardSquare(5, 5, BLACK));
-
-	// the initial empty boardsquares adjacent to the starting pieces
-	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 4, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 6, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 6, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 6, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 6, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 4, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 3, EMPTY));
-
-	p_t_ = new Turn(BLACK, adjacent_empty_bs_vector_, b_);
-	game_over_flag_ = false;
-
-	// debugging!
-	outputBoardToConsole();
-}
-
-State ReversiModel::getBoardSquareState(int row, int col)
-{
-	return b_.getBoardSquare(row, col)->getState();
-}
-
-bool ReversiModel::chooseBoardSquare(int row, int col)
-{
-	bool valid_move_flag;
-	valid_move_flag = checkMove(*p_t_, row, col);
-	if (valid_move_flag == true)
+	for (int i = 0; i < t.getValidMoveArraySize(); i++)
 	{
-		resolveMove(*b_.getBoardSquare(row, col));
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool ReversiModel::isGameOver()
-{
-	// in order to determine if the game is over, we have to hit a point
-	// where there are no valid moves for two turns in a row. So we need to put
-	// in some kind of counter such that when valid moves is calculated and
-	// we find that it equals 0 twice in a row, isGameOver returns true
-	// and the game is over ie. no more moves can be made and a winner is
-	// declared
-	return game_over_flag_;
-}
-
-int* ReversiModel::getScore()
-{
-	int* p_score = new int[2];
-	// p_score[0] is the black player's score
-	p_score[0] = 0;
-	// p_score[1] is the white player's score
-	p_score[1] = 0;
-	for (int i = 1; i <= 8; i++)
-	{
-		for (int j = 1; j <= 8; j++)
+		if (row == t.getValidMoveArray()[i].row && col == t.getValidMoveArray()[i].col)
 		{
-			if (b_.getBoardSquare(i, j)->getState() == BLACK)
-			{
-				p_score[0]++;
-			}
-			if (b_.getBoardSquare(i, j)->getState() == WHITE)
-			{
-				p_score[1]++;
-			}
+			return true;
 		}
 	}
-	return p_score;
+	return false;
 }
 
 void ReversiModel::updateNonEmptyBoardSquareVector(BoardSquare chosen_bs, State pc)
@@ -135,7 +65,6 @@ void ReversiModel::updateAdjacentEmptySquares(BoardSquare bs)
 	}
 }
 
-//split into two functions
 bool getChosenValidMove(Turn t, int row, int col, ValidMove* p_chosen_vm)
 {
 	for (int i = 0; i < t.getValidMoveArraySize(); i++)
@@ -150,22 +79,9 @@ bool getChosenValidMove(Turn t, int row, int col, ValidMove* p_chosen_vm)
 	return false;
 }
 
-bool ReversiModel::checkMove(Turn t, int row, int col)
-{
-	for (int i = 0; i < t.getValidMoveArraySize(); i++)
-	{
-		if (row == t.getValidMoveArray()[i].row && col == t.getValidMoveArray()[i].col)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 // don't forget to change getBoardSquare to verify if it returns an offBoard boardsquare.
 void ReversiModel::resolveMove(BoardSquare chosen_bs)
 {
-	ValidMove* p_vm = p_t_->getValidMoveArray();
 	ValidMove chosen_vm;
 	int chosen_bs_row = chosen_bs.getRow();
 	int chosen_bs_col = chosen_bs.getCol();
@@ -207,12 +123,6 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 	// update empty adjacent board squares
 	updateAdjacentEmptySquares(chosen_bs);
 
-	//
-	outputBoardToConsole();
-
-	// now, update the View and delete the turn because it is finished.
-	//updateView();
-
 	pc = p_t_->getPlayerColour();
 
 	// look up how destructors work
@@ -233,6 +143,8 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 			game_over_flag_ = true;
 		}
 	}
+
+	notifyView();
 }
 
 void ReversiModel::flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State pc, Board* p_b, int row_offset, int col_offset)
@@ -251,19 +163,117 @@ void ReversiModel::flipBoardSquares(int chosen_bs_row, int chosen_bs_col, State 
 	}
 }
 
-void ReversiModel::outputBoardToConsole()
+// update all of the views that are registered with ReversiModel
+void ReversiModel::notifyView()
 {
+	for (int i = 0; i < (int)rvi_addr_vector_.size(); i++)
+	{
+		rvi_addr_vector_[i]->updateView();
+	}
+}
+
+ReversiModel::ReversiModel()
+{
+	b_ = Board();
+	// the initial board configuration
+	non_empty_bs_vector_.push_back(BoardSquare(4, 4, BLACK));
+	non_empty_bs_vector_.push_back(BoardSquare(4, 5, WHITE));
+	non_empty_bs_vector_.push_back(BoardSquare(5, 4, WHITE));
+	non_empty_bs_vector_.push_back(BoardSquare(5, 5, BLACK));
+
+	// the initial empty boardsquares adjacent to the starting pieces
+	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 3, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 4, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 5, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 6, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 6, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 6, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 6, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 5, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 4, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 3, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 3, EMPTY));
+	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 3, EMPTY));
+
+	p_t_ = new Turn(BLACK, adjacent_empty_bs_vector_, b_);
+	game_over_flag_ = false;
+}
+
+ReversiModel::~ReversiModel()
+{
+	non_empty_bs_vector_.clear();
+	adjacent_empty_bs_vector_.clear();
+	delete p_t_;
+	rvi_addr_vector_.clear();
+}
+
+State ReversiModel::getBoardSquareState(int row, int col)
+{
+	return b_.getBoardSquare(row, col)->getState();
+}
+
+bool ReversiModel::chooseBoardSquare(int row, int col)
+{
+	bool valid_move_flag;
+	valid_move_flag = checkMove(*p_t_, row, col);
+	if (valid_move_flag == true)
+	{
+		resolveMove(*b_.getBoardSquare(row, col));
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+State ReversiModel::getCurrentPlayerColour()
+{
+	return p_t_->getPlayerColour();
+}
+
+bool ReversiModel::isGameOver()
+{
+	return game_over_flag_;
+}
+
+int* ReversiModel::getScore()
+{
+	int* p_score = new int[2];
+	// p_score[0] is the black player's score
+	p_score[0] = 0;
+	// p_score[1] is the white player's score
+	p_score[1] = 0;
 	for (int i = 1; i <= 8; i++)
 	{
 		for (int j = 1; j <= 8; j++)
 		{
-			std::cout << b_.getBoardSquare(i, j)->getState();
-			// if end of row, go to next row
-			if (j == 8)
+			if (b_.getBoardSquare(i, j)->getState() == BLACK)
 			{
-				std::cout << std::endl;
+				p_score[0]++;
+			}
+			if (b_.getBoardSquare(i, j)->getState() == WHITE)
+			{
+				p_score[1]++;
 			}
 		}
 	}
-	std::cout << std::endl;
+	return p_score;
 }
+
+void ReversiModel::registerView (ReversiViewInterface* p_rvi)
+{
+	rvi_addr_vector_.push_back(p_rvi);
+}
+
+void ReversiModel::removeView (ReversiViewInterface* p_rvi)
+{
+	for (int i = 0; i < rvi_addr_vector_.size(); i++)
+	{
+        if (rvi_addr_vector_[i] == p_rvi)
+		{
+			rvi_addr_vector_.erase(rvi_addr_vector_.begin() + i);
+		}
+	}
+}
+

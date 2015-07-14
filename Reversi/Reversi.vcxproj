@@ -13,14 +13,20 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardSquare.h" />
+    <ClInclude Include="CppInterfaces.h" />
+    <ClInclude Include="ReversiViewConsole.h" />
+    <ClInclude Include="ReversiController.h" />
     <ClInclude Include="ReversiModel.h" />
+    <ClInclude Include="ReversiViewInterface.h" />
     <ClInclude Include="Turn.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardSquare.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ReversiController.cpp" />
     <ClCompile Include="ReversiModel.cpp" />
+    <ClCompile Include="ReversiViewConsole.cpp" />
     <ClCompile Include="Turn.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -54,6 +60,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>CppInterfaces.h</PrecompiledHeaderFile>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

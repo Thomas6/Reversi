@@ -1,3 +1,5 @@
+#include "CppInterfaces.h"
+
 #include "Turn.h"
 
 Turn::Turn()

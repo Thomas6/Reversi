@@ -1,3 +1,5 @@
+#include "CppInterfaces.h"
+
 #include "BoardSquare.h"
 
 BoardSquare::BoardSquare()
