@@ -16,16 +16,22 @@ Board::Board()
 			pp_bs_matrix_[i][j] = BoardSquare(i+1, j+1, EMPTY);
 		}
 	}
-
+	
 	// set the center 4 board spaces to their proper starting state
+	
 	setBoardSquareState(getBoardSquare(4,4), WHITE);
 	setBoardSquareState(getBoardSquare(4,5), BLACK);
 	setBoardSquareState(getBoardSquare(5,4), BLACK);
 	setBoardSquareState(getBoardSquare(5,5), WHITE);
+	
+	
 
-	// debugging
-	BoardSquare* bs = getBoardSquare(5,5);
-
+	// DEBUG
+	/*setBoardSquareState(getBoardSquare(3,4), WHITE);
+	setBoardSquareState(getBoardSquare(4,4), WHITE);
+	setBoardSquareState(getBoardSquare(5,4), WHITE);
+	setBoardSquareState(getBoardSquare(2,4), BLACK);
+	*/
 	// this will be used to represent a board square thats off the edge of the board
 	offboard_bs_= BoardSquare(-1, -1, OFFBOARD);
 }

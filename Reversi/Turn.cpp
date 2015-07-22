@@ -34,6 +34,14 @@ Turn::Turn(State pc, std::vector<BoardSquare> adjacent_empty_bs_vector, Board b)
 		p_vm_array_[i] = temp_vm_stack.top();
 		temp_vm_stack.pop();
 	}
+
+	//DEBUGGING
+	int size = getValidMoveArraySize();
+	ValidMove vm_array[60];
+	for (int i = 0; i < size; i++)
+	{
+		vm_array[i] = getValidMoveArray()[i];
+	}
 }
 
 void Turn::constructDirection(Direction &dir, int row_offset, int col_offset, Direction_Name dir_name)
@@ -57,6 +65,7 @@ void Turn::constructCardinalAndOrdinalDirectionArray()
 
 bool Turn::checkDirection(BoardSquare current_empty_bs, Board b, State pc, int row_offset, int col_offset)
 {
+	/*
 	BoardSquare* p_examined_bs;
 
 	p_examined_bs = b.getBoardSquare(current_empty_bs.getRow() + row_offset, current_empty_bs.getCol() + col_offset);
@@ -93,6 +102,36 @@ bool Turn::checkDirection(BoardSquare current_empty_bs, Board b, State pc, int r
 		else
 		{
 			 return false;
+		}
+	}
+	// if the board square being examined is not of the other player's colour, then we go on to the next direction
+	else
+	{
+		return false;
+	}
+	*/
+	BoardSquare* p_examined_bs;
+
+	p_examined_bs = b.getBoardSquare(current_empty_bs.getRow() + row_offset, current_empty_bs.getCol() + col_offset);
+	// if the board square being examined is of the other player's colour, then there is the potential for a move in this direction
+	if (p_examined_bs->getState() == getOtherPlayerColour(pc))
+	{
+		while(p_examined_bs->getState() == getOtherPlayerColour(pc))
+		{
+			p_examined_bs = b.getBoardSquare(p_examined_bs->getRow() + row_offset, p_examined_bs->getCol() + col_offset);
+			// if we found a board square that is of the current player's colour, then this is definitely a valid move
+			if (p_examined_bs->getState() == pc)
+			{
+				return true;
+		    }
+			// if we found a board square that is either empty or off board, then we go on to the next direction
+			else if (p_examined_bs->getState() == EMPTY || p_examined_bs->getState() == OFFBOARD)
+			{
+				return false;
+			}
+			// go around the while loop again
+			else
+			{}
 		}
 	}
 	// if the board square being examined is not of the other player's colour, then we go on to the next direction

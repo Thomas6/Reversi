@@ -3,6 +3,8 @@
 
 #include "BoardSquare.h"
 
+//struct BoardSquare
+
 class Board
 {
 	// This is what the board is made of. 
@@ -23,6 +25,7 @@ class Board
 		*******************************************************************/
 		Board();
 
+
 		/***************getBoardSquare**********************************
 		* Returns a pointer to a board square. If the coordinates, row and column,
 		* point to a location off board, it returns a singular off board square,
@@ -35,6 +38,7 @@ class Board
 		*
 		*******************************************************************/
 		BoardSquare* getBoardSquare(int row, int col);
+
 
 		/***************setBoardSquareState**********************************
 		* Sets the state of a given board square.

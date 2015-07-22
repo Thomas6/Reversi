@@ -7,7 +7,6 @@
 #include <vector>
 #include <stack>
 
-struct ValidMove;
 class Turn;
 
 class ReversiModel
@@ -163,7 +162,7 @@ class ReversiModel
 		*    State
 		*
 		*******************************************************************/
-		State getCurrentPlayerColour();
+		std::string getCurrentPlayerColour();
 
 		
 		/************************isGameOver************************************
@@ -212,6 +211,8 @@ class ReversiModel
 		*
 		*******************************************************************/
 		void removeView (ReversiViewInterface* p_rvi);
+
+		Turn getTurn();
 };
 
 #endif // REVERSI_MODEL_H

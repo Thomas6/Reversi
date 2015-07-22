@@ -3,6 +3,7 @@
 
 #include "ReversiModel.h"
 #include <iostream>
+#include <string>
 
 class ReversiViewConsole : implements ReversiViewInterface
 {
