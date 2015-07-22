@@ -1,15 +1,19 @@
-﻿Build started 22/07/2015 1:50:53 AM.
+﻿Build started 22/07/2015 3:22:55 AM.
      1>Project "C:\Users\Thomas\documents\visual studio 2010\Projects\Reversi\Reversi\Reversi.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Reversi.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"CppInterfaces.h" /Fp"Debug\Reversi.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp ReversiModel.cpp ReversiViewConsole.cpp Turn.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"CppInterfaces.h" /Fp"Debug\Reversi.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Board.cpp BoardSquare.cpp Main.cpp ReversiController.cpp ReversiModel.cpp ReversiViewConsole.cpp Turn.cpp
          Turn.cpp
-     1>c:\users\thomas\documents\visual studio 2010\projects\reversi\reversi\turn.cpp(142): warning C4715: 'Turn::checkDirection' : not all control paths return a value
+     1>c:\users\thomas\documents\visual studio 2010\projects\reversi\reversi\turn.cpp(89): warning C4715: 'Turn::checkDirection' : not all control paths return a value
          ReversiViewConsole.cpp
          ReversiModel.cpp
-     1>c:\users\thomas\documents\visual studio 2010\projects\reversi\reversi\reversimodel.cpp(309): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\thomas\documents\visual studio 2010\projects\reversi\reversi\reversimodel.cpp(269): warning C4172: returning address of local variable or temporary
+     1>c:\users\thomas\documents\visual studio 2010\projects\reversi\reversi\reversimodel.cpp(279): warning C4018: '<' : signed/unsigned mismatch
+         ReversiController.cpp
          Main.cpp
+         BoardSquare.cpp
+         Board.cpp
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Thomas\documents\visual studio 2010\Projects\Reversi\Debug\Reversi.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Reversi.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Thomas\documents\visual studio 2010\Projects\Reversi\Debug\Reversi.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Thomas\documents\visual studio 2010\Projects\Reversi\Debug\Reversi.lib" /MACHINE:X86 Debug\Board.obj
          Debug\BoardSquare.obj
@@ -29,4 +33,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.05
+Time Elapsed 00:00:04.04

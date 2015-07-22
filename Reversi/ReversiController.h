@@ -11,13 +11,18 @@ class ReversiController
     public:
 
 		/***************ReversiController**********************************
-		* Initialize reversiModel and control game flow
-		* Parameters:
-		*   None
-		* Returns:
-		*   void
+		* Constructor. Initializes ReversiModel and controls game flow
+		*
 		*******************************************************************/
 		ReversiController();
+
+
+		/***************~ReversiController**********************************
+		* Destructor. Deletes reversiModel.
+		*
+		*******************************************************************/
+		~ReversiController();
+
 
 		/***************chooseBoardSquare********************************
 		* It copies reversiModel's choose board square, but it should be
@@ -31,6 +36,8 @@ class ReversiController
 		*
 		*******************************************************************/
 		bool chooseBoardSquare(int row, int col);
+
+
 };
 
 #endif // REVERSI_CONTROLLER_H

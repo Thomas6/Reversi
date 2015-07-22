@@ -8,19 +8,27 @@
 #include <stack>
 
 class Turn;
+struct ValidMove;
 
 class ReversiModel
 {
 	Board b_;
+
 	// a vector full of all boardsquares on the board that do not have the state EMPTY
 	std::vector<BoardSquare> non_empty_bs_vector_;
+
 	// a vector full of all boardsquares adjacent to all non-empty board squares
 	std::vector<BoardSquare> adjacent_empty_bs_vector_;
+
 	// the current player turn.
 	Turn* p_t_;
-	//
+
+	// it is set to true when the game is over, which is when there is no more moves that either player can make.
 	bool game_over_flag_;
+
+	// holds the address to each view that has been registered with ReversiModel
 	std::vector<ReversiViewInterface*> rvi_addr_vector_;
+
 
 
 	/************************checkMove************************************
@@ -34,7 +42,7 @@ class ReversiModel
 	*    bool: true if the move is valid, false if it is not.
 	*
 	***************************************************************************/
-	bool checkMove(Turn t, int row, int col);
+	bool checkMove(int row, int col);
 
 	
 	/************************updateNonEmptyBoardSquareVector************************************
@@ -64,6 +72,20 @@ class ReversiModel
 	void updateAdjacentEmptySquares(BoardSquare bs);
 
 	
+	/************************getChosenValidMove************************************
+	* Matches the chosen move to the array of possible valid moves for the turn.
+	* Returns false if the move is invalid.
+	* Parameters:
+	*     int row: row of the chosen move
+	*	  int col: column of the chosen move
+	*     ValidMove* p_chosen_vm: pointer to the chosen ValidMove
+	* Returns:
+	*     bool
+	*
+	*******************************************************************/
+	bool getChosenValidMove(int row, int col, ValidMove* p_chosen_vm);
+
+
 	/************************resolveMove************************************
 	* The player has made a move and this function resolves the outcome of that move.
 	* If the move results in the game ending, it detects that and sets the appropriate flag.
@@ -95,8 +117,8 @@ class ReversiModel
 
 	
 	/************************notifyView************************************
-	* resolveMove calls this function at the end to let all the classes that implemented
-	* ReversiViewInterface  and registered with the ReversiModel object to update the UI.
+	* resolveMove() calls this function at the end to let all the classes that implemented
+	* ReversiViewInterface and registered with ReversiModel to update the UI.
 	* Parameters:
 	*	 None
 	* Returns:
@@ -108,23 +130,15 @@ class ReversiModel
     public:
 
 		/************************ReversiModel************************************
-		* Default constructor. Initializes the board, sets up the first turn, and initializes
+		* Constructor. Initializes the board, sets up the first turn, and initializes
 		* the vector attributes.
-		* Parameters:
-		*    None
-		* Returns:
-		*   ReversiModel
 		*
 		*******************************************************************/
 		ReversiModel();
 
 		
-		/************************ReversiModel************************************
-		* Default destructor. Clears the vectors, deletes the Turn pointer.
-		* Parameters:
-		*    None
-		* Returns:
-		*   void
+		/************************~ReversiModel************************************
+		* Destructor. Deletes the Turn pointer.
 		*
 		*******************************************************************/
 		~ReversiModel();
@@ -159,7 +173,7 @@ class ReversiModel
 		* Parameters:
 		*    None
 		* Returns:
-		*    State
+		*    string
 		*
 		*******************************************************************/
 		std::string getCurrentPlayerColour();
@@ -212,7 +226,7 @@ class ReversiModel
 		*******************************************************************/
 		void removeView (ReversiViewInterface* p_rvi);
 
-		Turn getTurn();
+
 };
 
 #endif // REVERSI_MODEL_H

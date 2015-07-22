@@ -12,24 +12,18 @@ class ReversiViewConsole : implements ReversiViewInterface
     public:
 
 		/************************ReversiViewConsole************************************
-		* Default constructor for ReversiViewConsole.
-		* Parameters:
-		*    None.
-		* Returns:
-		*    ReversiViewConsole
+		* Default constructor
 		*
 		*******************************************************************/
 		ReversiViewConsole(){}
 
 
 		/************************ReversiViewConsole************************************
-		* Constructor for ReversiViewConsole. Sets the ReversiModel pointer attribute for
+		* Constructor. Sets the ReversiModel pointer attribute for
 		* the class. It also registers the class with the model. The idea is that ReversiModel
 		* could display multiple views if desired.
 		* Parameters:
 		*    ReversiModel*
-		* Returns:
-		*    ReversiViewConsole
 		*
 		*******************************************************************/
 		ReversiViewConsole(ReversiModel* p_rm);
@@ -79,6 +73,8 @@ class ReversiViewConsole : implements ReversiViewInterface
 		*
 		*******************************************************************/
 		void updateView();
+
+
 };
 
 #endif // REVERSI_VIEW_CONSOLE_H

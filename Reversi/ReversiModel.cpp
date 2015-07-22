@@ -3,13 +3,11 @@
 #include "ReversiModel.h"
 #include <iostream>
 
-ValidMove vm_array[60];
-// 
-bool ReversiModel::checkMove(Turn t, int row, int col)
+bool ReversiModel::checkMove(int row, int col)
 {
-	for (int i = 0; i < t.getValidMoveArraySize(); i++)
+	for (int i = 0; i < p_t_->getValidMoveArraySize(); i++)
 	{
-		if (row == t.getValidMoveArray()[i].row && col == t.getValidMoveArray()[i].col)
+		if (row == p_t_->getValidMoveArray()[i].row && col == p_t_->getValidMoveArray()[i].col)
 		{
 			return true;
 		}
@@ -70,13 +68,13 @@ void ReversiModel::updateAdjacentEmptySquares(BoardSquare bs)
 	}
 }
 
-bool getChosenValidMove(Turn t, int row, int col, ValidMove* p_chosen_vm)
+bool ReversiModel::getChosenValidMove(int row, int col, ValidMove* p_chosen_vm)
 {
-	for (int i = 0; i < t.getValidMoveArraySize(); i++)
+	for (int i = 0; i < p_t_->getValidMoveArraySize(); i++)
 	{
-		if (row == t.getValidMoveArray()[i].row && col == t.getValidMoveArray()[i].col)
+		if (row == p_t_->getValidMoveArray()[i].row && col == p_t_->getValidMoveArray()[i].col)
 		{
-			*p_chosen_vm = t.getValidMoveArray()[i];
+			*p_chosen_vm = p_t_->getValidMoveArray()[i];
 			return true;
 		}
 	}
@@ -90,7 +88,7 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 	int chosen_bs_row = chosen_bs.getRow();
 	int chosen_bs_col = chosen_bs.getCol();
 	State pc = p_t_->getPlayerColour();
-	bool is_chosen_mv_flag = getChosenValidMove(*p_t_, chosen_bs_row, chosen_bs_col, &chosen_vm);
+	bool is_chosen_mv_flag = getChosenValidMove(chosen_bs_row, chosen_bs_col, &chosen_vm);
 
 	if (is_chosen_mv_flag == false)
 	{
@@ -129,10 +127,8 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 
 	pc = p_t_->getPlayerColour();
 
-	// look up how destructors work
 	delete p_t_;
 
-	// might delegate some of this functionality to another function and make some of these functions private too
 	p_t_ = new Turn( p_t_->getOtherPlayerColour(pc), adjacent_empty_bs_vector_, b_);
 
 	// current player can't make a move.
@@ -148,6 +144,7 @@ void ReversiModel::resolveMove(BoardSquare chosen_bs)
 		}
 	}
 
+	// calls updateView() on all views registered with ReversiModel
 	notifyView();
 }
 
@@ -179,20 +176,13 @@ void ReversiModel::notifyView()
 ReversiModel::ReversiModel()
 {
 	b_ = Board();
+
 	// the initial board configuration
-	
 	non_empty_bs_vector_.push_back(BoardSquare(4, 4, BLACK));
 	non_empty_bs_vector_.push_back(BoardSquare(4, 5, WHITE));
 	non_empty_bs_vector_.push_back(BoardSquare(5, 4, WHITE));
 	non_empty_bs_vector_.push_back(BoardSquare(5, 5, BLACK));
 	
-	/*
-	non_empty_bs_vector_.push_back(BoardSquare(3, 4, WHITE));
-	non_empty_bs_vector_.push_back(BoardSquare(4, 4, WHITE));
-	non_empty_bs_vector_.push_back(BoardSquare(5, 4, WHITE));
-	non_empty_bs_vector_.push_back(BoardSquare(2, 4, BLACK));
-	*/
-
 	// the initial empty boardsquares adjacent to the starting pieces
 	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 3, EMPTY));
 	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 4, EMPTY));
@@ -206,35 +196,16 @@ ReversiModel::ReversiModel()
 	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 3, EMPTY));
 	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 3, EMPTY));
 	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 3, EMPTY));
-	
-	/*
-	adjacent_empty_bs_vector_.push_back(BoardSquare(1, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(2, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 3, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(5, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(4, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(3, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(2, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(1, 5, EMPTY));
-	adjacent_empty_bs_vector_.push_back(BoardSquare(1, 4, EMPTY));
-	// bottom middle
-	adjacent_empty_bs_vector_.push_back(BoardSquare(6, 4, EMPTY));
-	*/
 
+	// the first turn
 	p_t_ = new Turn(BLACK, adjacent_empty_bs_vector_, b_);
+
 	game_over_flag_ = false;
 }
 
 ReversiModel::~ReversiModel()
 {
-	non_empty_bs_vector_.clear();
-	adjacent_empty_bs_vector_.clear();
 	delete p_t_;
-	rvi_addr_vector_.clear();
 }
 
 State ReversiModel::getBoardSquareState(int row, int col)
@@ -245,7 +216,7 @@ State ReversiModel::getBoardSquareState(int row, int col)
 bool ReversiModel::chooseBoardSquare(int row, int col)
 {
 	bool valid_move_flag;
-	valid_move_flag = checkMove(*p_t_, row, col);
+	valid_move_flag = checkMove(row, col);
 	if (valid_move_flag == true)
 	{
 		resolveMove(*b_.getBoardSquare(row, col));
@@ -276,26 +247,26 @@ bool ReversiModel::isGameOver()
 
 int* ReversiModel::getScore()
 {
-	int* p_score = new int[2];
+	int score_array[2];
 	// p_score[0] is the black player's score
-	p_score[0] = 0;
+	score_array[0] = 0;
 	// p_score[1] is the white player's score
-	p_score[1] = 0;
+	score_array[1] = 0;
 	for (int i = 1; i <= 8; i++)
 	{
 		for (int j = 1; j <= 8; j++)
 		{
 			if (b_.getBoardSquare(i, j)->getState() == BLACK)
 			{
-				p_score[0]++;
+				score_array[0]++;
 			}
 			if (b_.getBoardSquare(i, j)->getState() == WHITE)
 			{
-				p_score[1]++;
+				score_array[1]++;
 			}
 		}
 	}
-	return p_score;
+	return score_array;
 }
 
 void ReversiModel::registerView (ReversiViewInterface* p_rvi)
@@ -313,9 +284,3 @@ void ReversiModel::removeView (ReversiViewInterface* p_rvi)
 		}
 	}
 }
-
-Turn ReversiModel::getTurn()
-{
-	return *p_t_;
-}
-

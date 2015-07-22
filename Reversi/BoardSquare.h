@@ -12,23 +12,18 @@ class BoardSquare
     public:
 
 		/***************BoardSquare**********************************
-		* Constructs board square. Default Constructer.
-		* Parameters:
-		*    None
-		* Returns:
-		*    a BoardSquare
+		* Default Constructer.
 		*
 		*******************************************************************/
 		BoardSquare();
 
+
 		/***************BoardSquare**********************************
-		* Sets a given board square. Sets all the attributes with the parameters given.
+		* Constructor. Sets a given board square. Sets all the attributes with the parameters given.
 		* Parameters:
 		*    int row: which row its on
 		*    int col: which column its on
 		*    State state: the state it starts out as
-		* Returns:
-		*    a BoardSquare
 		*
 		*******************************************************************/
 		BoardSquare(int row, int col, State state);
@@ -44,6 +39,7 @@ class BoardSquare
 		*******************************************************************/
 		int getRow();
 
+
 		/***************getCol*********************************************
 		* Returns the column the board square is in.
 		* Parameters:
@@ -53,6 +49,7 @@ class BoardSquare
 		*
 		*******************************************************************/
 		int getCol();
+
 
 		/***************getState*********************************************
 		* Returns the state of the board square
@@ -64,6 +61,7 @@ class BoardSquare
 		*******************************************************************/
 		State getState();
 
+
 		/***************getState*********************************************
 		* Sets the state of the board square
 		* Parameters:
@@ -73,6 +71,8 @@ class BoardSquare
 		*
 		*******************************************************************/
 		void setState(State state);
+
+
 };
 
 #endif // BOARDSQUARE_H // end

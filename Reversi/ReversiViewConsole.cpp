@@ -25,13 +25,14 @@ void ReversiViewConsole::outputScore()
 	}
 }
 
-// make this better
 void ReversiViewConsole::outputBoard()
 {
 	for (int i = 0; i <= 16; i++)
 	{
 		for (int j = 1; j <= 8; j++)
 		{
+			// the top row of the board
+			// assigns numbers to each column
 			if (i == 0 && j == 1)
 			{
 				std::cout << " ";
@@ -44,21 +45,25 @@ void ReversiViewConsole::outputBoard()
 					std::cout << " " << j;
 				}
 			}
+
+			// all the rows below the top one.
 			if (i % 2 == 0 && i != 0)
 			{
+				// this adds the row numbers
 				if (j == 1)
 				{
 					std::cout << i/2 << " ";
 				}
-				// change this so that it outputs letters and add spaces and lines and shit
-				if ( p_rm_->getBoardSquareState(i/2, j) == EMPTY)
+
+				if (p_rm_->getBoardSquareState(i/2, j) == EMPTY)
 				{
 					std::cout << "-" << " ";
 				}
-				else if ( p_rm_->getBoardSquareState(i/2, j) == BLACK)
+				else if (p_rm_->getBoardSquareState(i/2, j) == BLACK)
 				{
 					std::cout << "B" << " ";
 				}
+
 				// it must be white if its not either empty or black
 				else
 				{
@@ -73,7 +78,7 @@ void ReversiViewConsole::outputBoard()
 		    }
 			else
 			{
-				if(j == 8)
+				if (j == 8)
 				{
 					std::cout << std::endl;
 				}
@@ -107,7 +112,7 @@ void ReversiViewConsole::outputGameOver()
 			std::cin.get();
 			std::cin.get();
 		}
-		// its a tie I guess?
+		// its a tie!
 		else
 		{
 			std::cout << "It's a tie! You are both well matched!" << std::endl;

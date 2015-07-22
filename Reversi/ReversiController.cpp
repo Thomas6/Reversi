@@ -10,6 +10,7 @@ ReversiController::ReversiController()
 	ReversiModel* p_rm = new ReversiModel();
 	p_rm_ = p_rm;
 	ReversiViewConsole rvc = ReversiViewConsole(p_rm_);
+
 	std::string response;
 	int row;
     int col;
@@ -22,21 +23,16 @@ ReversiController::ReversiController()
 	rvc.outputBoard();
 	while (!p_rm_->isGameOver())
 	{
-		//DEBUGGING
-	   /* int size = p_rm_->getTurn().getValidMoveArraySize();
-	    ValidMove vm_array[60];
-	    for (int i = 0; i < size; i++)
-		{
-			vm_array[i] = p_rm_->getTurn().getValidMoveArray()[i];
-		}*/
-
 		std::cin >> response;
 		// turn the characters into the integers they represent
 		bool has_only_digits = (response.find_first_not_of( "0123456789" ) == std::string::npos);
 		if (has_only_digits)
 		{
+			// converts the response into integers
+			// 48 is the difference between the ascii character and the numbers they represent
 			row = ((int)response.at(0)) - 48;
 		    col = ((int)response.at(1)) - 48;
+
 			std::cout << "The " <<  (std::string)p_rm_->getCurrentPlayerColour() << " player has chosen: " << "Row "<< row << " Column " << col << std::endl;
 			valid_move_was_chosen = chooseBoardSquare(row, col);
 			if (valid_move_was_chosen == false)
@@ -54,6 +50,11 @@ ReversiController::ReversiController()
 			std::cout << "Invalid response. Please enter another response." << std::endl;
 		}
 	}
+}
+
+ReversiController::~ReversiController()
+{
+	delete p_rm_;
 }
 
 bool ReversiController::chooseBoardSquare(int row, int col)

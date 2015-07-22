@@ -10,7 +10,7 @@ class Board
 	// This is what the board is made of. 
 	// board_square_matrix_[1][1] represents the top-left corner square;
 	// board_square_matrix_[8][8] represents the bottom-right corner square.
-	BoardSquare** pp_bs_matrix_;
+	BoardSquare bs_matrix_[8][8];
 
 	// this will be used to represent a board square thats "off the edge" of the board
 	BoardSquare offboard_bs_;
@@ -18,9 +18,8 @@ class Board
     public:
 
 		/***************Board**********************************
-		* Construct the Board. This involes allocating and setting pp_bs_matrix_
-		* and also setting the initial black and white squares that you have at the 
-		* beginning of every Reversi game.
+		* Constructor. This involes setting the initial black and white squares 
+		* that you have at the beginning of every Reversi game.
 		*
 		*******************************************************************/
 		Board();
@@ -50,6 +49,8 @@ class Board
 		*
 		*******************************************************************/
 		void setBoardSquareState(BoardSquare* p_bs, State state);
+
+
 };
 
 #endif // BOARD_H 

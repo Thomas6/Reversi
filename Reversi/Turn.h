@@ -32,11 +32,15 @@ class Turn
     private:
 
 		int p_vm_array_size_;
+
 		// this pointer to a valid move array contains all possible valid moves for a turn. 
 		ValidMove* p_vm_array_;
+
 		// the player's colour for this Turn. Necessary for determining the possible valid moves for a turn.
 		State pc_;
+
 		Direction CARDINAL_AND_ORDINAL_DIRECTIONS_ARRAY[8];
+
 
 		/************************constructValidMove************************************
 		* Constructs a single valid move.
@@ -52,7 +56,7 @@ class Turn
 
 
 		/************************constructDirection************************************
-		* Sets the attributes in a Drection struct. Used for creating the CardinalAndOrdinalDirectionArray.
+		* Sets the attributes in a Direction struct. Used for creating the CardinalAndOrdinalDirectionArray.
 		* Parameters:
 		*    Direction &dir: address to the direction struct being constructed
 		*    int row_offset
@@ -94,28 +98,22 @@ class Turn
     public:
 
 		/************************Turn************************************
-		* Default Turn constructor
-		* Parameters:
-		*	 None
-		* Returns:
-		*    void
-		*
-		*******************************************************************/
-		Turn();
-
-		
-		/************************Turn************************************
-		* Turn constructor. Sets all the attributes.
+		* Constructor. Sets all the attributes.
 		* Parameters:
 		*	 State pc: used for setting player colour
 		*    vector<BoardSquare> adjacent_empty_bs_vector: used for constructing valid moves, because 
 		*        only empty squares can be valid move candidates
 		*    Board b
-		* Returns:
-		*    Turn
 		*
 		*******************************************************************/
 		Turn(State pc, std::vector<BoardSquare> adjacent_empty_bs_vector, Board b);
+
+
+		/************************~Turn************************************
+		* Destructor. Deletes p_vm_array_.
+		*
+		*******************************************************************/
+		~Turn();
 
 		
 		/************************getValidMoveArraySize************************************
@@ -170,6 +168,8 @@ class Turn
 		*
 		*******************************************************************/
 		Direction* getCardinalAndOrdinalDirectionsArray();
+
+
 };
 
 #endif // TURN_H // end
